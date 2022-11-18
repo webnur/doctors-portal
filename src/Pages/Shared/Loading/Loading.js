@@ -3,11 +3,11 @@ import React from 'react';
 const Loading = () => {
     return (
         <div>
-            <button type="button" className="bg-indigo-500 ..." disabled>
-                <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
-                </svg>
-                Processing...
-            </button>
+            <div className="flex">
+                <div className="spinner-border animate-spin inline-block bg-slate-500 w-8 h-8 border-4 rounded-full" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
         </div>
     );
 };

@@ -3,13 +3,20 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
+import useToken from '../../hooks/useToken'
 
 const SignUp = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, updateUser } = useContext(AuthContext)
     const [signUpError, setSignUpError] = useState('');
+
+    const [crateUserEmail, setCreateUserEmail] = useState('')
+    const [token] = useToken(crateUserEmail)
     const navigate = useNavigate()
+    if(token){
+        navigate('/')
+    }
 
     const handleSignUp = (data) => {
         console.log(data)
@@ -26,7 +33,7 @@ const SignUp = () => {
                 updateUser(userInfo)
                     .then(() => {
                         saveUser(data.name, data.email)
-                      
+
                     })
                     .catch(err => console.log(err));
 
@@ -40,7 +47,7 @@ const SignUp = () => {
 
 
     const saveUser = (name, email) => {
-        const user =  {name, email}
+        const user = { name, email }
         fetch('http://localhost:5000/users', {
             method: 'POST',
             headers: {
@@ -48,12 +55,15 @@ const SignUp = () => {
             },
             body: JSON.stringify(user)
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log('save user',data)
-            navigate('/')
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('save user', data)
+                setCreateUserEmail(email)
+            })
     }
+
+
+
 
 
     return (
